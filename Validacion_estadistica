@@ -1,0 +1,23 @@
+sub22= subset(h_c, Fecha>="2022-04-01" & Fecha<="2022-07-31" )
+sub13= subset(h_c, Fecha>="2013-04-01" & Fecha<="2013-07-31" )
+
+comp <- data.frame(sub22,sub13)
+############################333
+RMSE<- rmse (comp$Dyn,comp$Dyn.1)
+BIAS <- bias(datos$Td_OVH,datos$Td_ard)
+
+colnames(comp) <- c("Fecha","A2022","Fecha.1","A2013")
+shapiro.test(comp$A2022)$p
+
+shapiro.test(comp$A2013)$p        
+install.packages("ggstatsplot")
+library("nortest")
+lillie.test(x = comp$A2022)
+lillie.test(x = comp$A2013)
+
+
+cor.test(comp$A2022,comp$A2013, method = "spearman",exact=F)
+
+ggscatterstats(data = comp, x =Dyn , y =Dyn.1, type = "nonparametric")+ylab("2013")+xlab("2022")
+
+ggscatterstats(data = datos, x =Td_OVH , y =Td_ard, type = "nonparametric")
